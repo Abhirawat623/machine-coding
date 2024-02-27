@@ -25,6 +25,8 @@
             width: 100%;
             background-color: yellow;
             height: 8vh;
+            text-align: center;
+            font-size: 2rem;
         }
         .right{
             background-color: red;
@@ -54,26 +56,27 @@
 </div>
    <script >
     //dragblebox
-    const bars= document.querySelectorAll(".bar");
-    const rightBox = document.getElementsByClassName("right")
-    const leftBox = document.getElementsByClassName("left")
+    let bars= document.querySelectorAll(".bar");
+    let rightBox = document.querySelector(".right")
+    let leftBox = document.querySelector(".left")
     //main box
 
-    bars.forEach(bar=>{
+   for(bar of bars){
         
         bar.addEventListener("dragstart",(event)=>{
           let choosen=event.target;
            //dragover
-          rightBox.addEventListener("dragover",()=>{
+          rightBox.addEventListener("dragover",(event)=>{
             event.preventDefault();
           });
           //drop
           rightBox.addEventListener("drop",(event)=>{
             rightBox.appendChild(choosen);
+            choosen=null
           })
 
           //for left
-          leftBox.addEventListener("dragover",()=>{
+          leftBox.addEventListener("dragover",(event)=>{
             event.preventDefault();
           });
           //drop
@@ -82,16 +85,8 @@
             choosen=null
           })
       
-      
-      
-      
-      
         })
-    })
-
-
- 
-
+    }
    </script>
 </body>
 </html>
