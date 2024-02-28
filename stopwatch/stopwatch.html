@@ -1,70 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stopwatch</title>
     <style>
-        .main{
-            display: flex;
-            margin: auto ;
-            align-items: center;
-            justify-content: center;
+      .main {
+        display: flex;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+      }
+      .box {
+        text-align: center;
+        background-color: black;
+        border: 1px solid fuchsia;
+        padding: 2rem;
+        margin-top: 4rem;
+        box-shadow: 0 0 10px rgb(128, 0, 128);
+        position: relative;
+        &:after {
+          content: "";
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          top: 1rem;
+          left: 1rem;
+          z-index: -1;
+          border-bottom: 1px solid fuchsia;
+          border-right: 1px solid fuchsia;
+          box-shadow: 3px 3px 3px 0 #80008066;
+          background-color: black;
         }
-        .box{
-            min-height: 10vh;
-            min-width: 50vh;
-            border: 1px solid black;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-        }
-        .display{
-            border: 1px solid black;
-            min-height: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .buttons{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 5px;
-            padding: 3px;
-            column-gap: 4px;
-        }
-        button{
-            min-height: 2rem;
-            min-width: 8rem;
-            
-        }
-        .red{
-            background-color: red;
-            color: white;
-        }
-        .green{
-            background-color: green;
-            color: white;
-        }
-        .yellow{
-            background-color: yellow;
-            color: black;
-        }
-    </style>
-</head>
-<body>
-    <div class="main">
-        <div class="box">
-          <div class="display"> 00:00:00</div>
-          <div class="buttons">
-            <button class="reset-btn yellow">Reset</button>
-            <button class="stop-btn red">Stop</button>
-            <button class="start-btn green">Start</button>
-            
+      }
+      .display {
+        font-size: 3em;
+        color: cyan;
+        text-shadow: 0 0 10px rgb(0, 128, 128);
+        margin-bottom: 0.5em;
+      }
 
-          </div>
-        </div> </div>
-</body>
+      .buttons {
+        cursor: pointer;
+        border: 1px solid cyan;
+        background: 0;
+        color: cyan;
+        padding: 0.5em 1em;
+        text-transform: uppercase;
+        margin: 0 0.5em;
+        transition: all 0.3s;
+      }
+      button {
+        min-height: 2rem;
+        min-width: 8rem;
+        cursor: pointer;
+        border: 1px solid cyan;
+        background: 0;
+        color: cyan;
+        padding: 0.5em 1em;
+        text-transform: uppercase;
+        margin: 0 0.5em;
+        transition: all 0.3s;
+      }
+
+      .buttons:hover {
+        scale: 1.01;
+        transition: ease-out;
+      }
+      .red {
+        background-color: red;
+        color: white;
+      }
+      .green {
+        background-color: green;
+        color: white;
+      }
+      .yellow {
+        background-color: yellow;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="box">
+        <p class="display">00:00:00</p>
+        <div class="buttons">
+          <button class="reset-btn yellow" name="reset">Reset</button>
+          <button class="stop-btn red" name="stop">Stop</button>
+          <button class="start-btn green" name="start">Start</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      //display for time
+      const display = document.querySelector(".display");
+      //for all btns
+      const buttons = document.querySelector(".buttons");
+
+      let seconds = 0;
+      let minutes = 0;
+      let hours = 0;
+      let timer = 0;
+      const displayTime = (hours, minutes, seconds) => {
+        display.innerText = `${hours < 10 ? `0${hours}` : hours}:${
+          minutes < 10 ? `0${minutes}` : minutes
+        }:${seconds < 10 ? `0${seconds}` : seconds}`;
+      };
+
+      const handleButtonClicked = (event) => {
+        const buttonSelect = event.target.name;
+        console.log(buttonSelect);
+        if (buttonSelect === "start") {
+          timer = setInterval(() => {
+            seconds++;
+            if (seconds > 58) {
+              seconds = 0;
+              minutes++;
+              if (minutes > 58) {
+                minutes = 0;
+                hours++;
+              }
+            }
+            displayTime(hours, minutes, seconds);
+          }, 1000);
+        }
+        console.log(timer);
+        //to stop
+        if (buttonSelect === "stop") {
+          clearInterval(timer);
+        }
+        //to reset
+        if (buttonSelect === "reset") {
+          clearInterval(timer);
+          seconds = minutes = time = 0;
+          displayTime(hours, minutes, seconds);
+        }
+      };
+      //if any btns clicked
+      buttons.addEventListener("click", handleButtonClicked);
+    </script>
+  </body>
 </html>
